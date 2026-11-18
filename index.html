@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comingo - Выбор темы</title>
+    <style>
+        /* Базовые стили */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #ffffff; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Контейнер приложения */
+        .app-container {
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            max-height: 850px;
+            background-color: #ffffff; 
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- ЭКРАН 1 (Стартовый) --- */
+        #screen-1 {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+            padding: 40px 20px;
+            text-align: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .content-1 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10vh;
+            width: 100%; /* Чтобы элементы центрировались правильно */
+        }
+
+        /* Стили для фото (Сорока) */
+        .mascot-photo {
+            width: 240px;       /* Немного увеличил птицу */
+            height: auto;       
+            object-fit: contain; 
+            margin-bottom: 15px;
+            display: block; /* Убирает лишние отступы снизу */
+        }
+
+        /* Стили для логотипа */
+        .logo-img {
+            width: 100%;
+            max-width: 280px; /* Увеличил максимальную ширину */
+            height: auto;
+            max-height: 90px; /* Увеличил максимальную высоту */
+            object-fit: contain;
+            margin-bottom: 20px; 
+            display: block;
+        }
+        
+        .subtitle { 
+            font-size: 18px; 
+            color: #6b7280; 
+            line-height: 1.5; 
+            max-width: 280px; 
+        }
+
+        .start-btn {
+            width: 100%;
+            padding: 20px;
+            background-color: #1c7ed6;
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(28, 126, 214, 0.2);
+            transition: transform 0.1s;
+        }
+        .start-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* --- ЭКРАН 2 (Выбор темы) --- */
+        #screen-2 {
+            display: none; 
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+            background-color: #ffffff; 
+        }
+
+        /* Шапка с крестиком */
+        .top-bar {
+            padding: 20px;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        /* Основной контент экрана 2 */
+        .main-content-2 {
+            padding: 0 20px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        /* Блок с персонажем и облаком */
+        .character-block {
+            display: flex;
+            align-items: center; 
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        /* Стили для фото персонажа */
+        .character-photo {
+            width: 120px;        
+            height: auto;
+            max-height: 150px;
+            object-fit: contain; 
+            margin-right: 10px;  
+            z-index: 2;
+            position: relative;
+        }
+
+        /* Облако с текстом */
+        .speech-bubble {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 20px;
+            padding: 20px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #2d3748;
+            line-height: 1.3;
+            position: relative;
+            flex-grow: 1; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        /* Хвостик облака (слева) */
+        .speech-bubble::before {
+            content: '';
+            position: absolute;
+            left: -12px;
+            top: 50%; 
+            transform: translateY(-50%) rotate(45deg);
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-left: 2px solid #e5e7eb;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        /* Карточки выбора */
+        .option-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 20px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: border-color 0.2s, background-color 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .option-card:active {
+            border-color: #9ca3af;
+            background-color: #f9fafb;
+        }
+
+        /* Иконки */
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .icon-purple { background-color: #9b51e0; }
+        .icon-blue { background-color: #2d9cdb; }
+
+        .option-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #1f2937;
+        }
+
+        /* Нижняя панель с кнопкой */
+        .bottom-bar {
+            padding: 20px;
+            background-color: #ffffff; 
+            border-top: 2px solid #f3f4f6; 
+        }
+
+        .continue-btn {
+            width: 100%;
+            padding: 20px;
+            background-color: #e5e7eb; 
+            color: #9ca3af;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: not-allowed;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        /* Класс для активной кнопки */
+        .continue-btn.active {
+            background-color: #1c7ed6;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(28, 126, 214, 0.2);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- ЭКРАН 1: Стартовый -->
+        <div id="screen-1">
+            <div class="content-1">
+                
+                <img src="Сорока.jpg" alt="Сорока" class="mascot-photo" onerror="this.src='https://via.placeholder.com/240x240?text=Фото+Сорока'">
+                
+                <img src="логотип.jpg" alt="Логотип" class="logo-img" onerror="this.src='https://via.placeholder.com/280x90?text=Логотип'">
+                
+                <p class="subtitle">Выучи все определения шаг за<br>шагом</p>
+            </div>
+            <button class="start-btn" onclick="goToScreen2()">НАЧАТЬ</button>
+        </div>
+
+        <!-- ЭКРАН 2: Выбор темы -->
+        <div id="screen-2">
+            <!-- Шапка -->
+            <div class="top-bar">
+                <button class="close-btn" onclick="goToScreen1()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Контент -->
+            <div class="main-content-2">
+                
+                <!-- Персонаж и облако -->
+                <div class="character-block">
+                    
+                    <img src="Пахомова.jpg" alt="Пахомова" class="character-photo" onerror="this.src='https://via.placeholder.com/120x150?text=Пахомова'">
+
+                    <!-- Облако -->
+                    <div class="speech-bubble">
+                        Что вы хотите<br>изучать?
+                    </div>
+                </div>
+
+                <!-- Карточка 1: Методология -->
+                <div class="option-card" onclick="selectCard(this)">
+                    <div class="icon-box icon-purple">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="option-title">Методология</div>
+                </div>
+
+                <!-- Карточка 2: Статистика -->
+                <div class="option-card" onclick="selectCard(this)">
+                    <div class="icon-box icon-blue">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                    </div>
+                    <div class="option-title">Статистика</div>
+                </div>
+
+            </div>
+
+            <!-- Кнопка "Продолжить" -->
+            <div class="bottom-bar">
+                <button class="continue-btn" id="continue-btn">ПРОДОЛЖИТЬ</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function goToScreen2() {
+            document.getElementById('screen-1').style.display = 'none';
+            document.getElementById('screen-2').style.display = 'flex';
+        }
+
+        function goToScreen1() {
+            document.getElementById('screen-2').style.display = 'none';
+            document.getElementById('screen-1').style.display = 'flex';
+            
+            document.querySelectorAll('.option-card').forEach(card => {
+                card.style.borderColor = '#e5e7eb';
+                card.style.backgroundColor = 'white';
+            });
+            const btn = document.getElementById('continue-btn');
+            btn.classList.remove('active');
+            btn.style.cursor = 'not-allowed';
+        }
+
+        function selectCard(card) {
+            document.querySelectorAll('.option-card').forEach(c => {
+                c.style.borderColor = '#e5e7eb';
+                c.style.backgroundColor = 'white';
+            });
+            
+            card.style.borderColor = '#1c7ed6';
+            card.style.backgroundColor = '#f0f7ff';
+
+            const btn = document.getElementById('continue-btn');
+            btn.classList.add('active');
+            btn.style.cursor = 'pointer';
+        }
+    </script>
+</body>
+</html>
